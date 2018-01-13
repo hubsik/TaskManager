@@ -5,8 +5,32 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskManager"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="TaskManager" Height="600" Width="720" HorizontalAlignment="Center" VerticalAlignment="Center" ResizeMode="NoResize" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" WindowStartupLocation="CenterScreen">
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="693*"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="500"/>
+            <ColumnDefinition Width="220
+                              "/>
+        </Grid.ColumnDefinitions>
+        <DataGrid x:Name="dataGridTasks" HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="480" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Task" Width="160" Binding="{Binding Task}"/>
+                <DataGridTextColumn Header="Priority" Width="80" Binding="{Binding Priority}"/>
+                <DataGridTextColumn Header="Date" Width="140" Binding="{Binding Date}"/>
+                <DataGridTextColumn Header="Status" Width="100" Binding="{Binding Status}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <ComboBox x:Name="comboBoxPriority" HorizontalAlignment="Left" Margin="170,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="86" Height="30" SelectedIndex="1"/>
+        <ComboBox x:Name="comboBoxStatus" HorizontalAlignment="Left" Margin="370,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="120" Height="30" SelectedIndex="0"/>
+        <DatePicker x:Name="datePickerDate" HorizontalAlignment="Left" Margin="261,10,0,0" Grid.Row="2" VerticalAlignment="Top" Height="30" Width="104"/>
+        <TextBox x:Name="textBoxTask" HorizontalAlignment="Left" Height="80" Margin="10,10,0,0" Grid.Row="2" TextWrapping="Wrap" Text="Nowe zadanie..." VerticalAlignment="Top" Width="155" GotFocus="textBoxTask_GotFocus" />
+        <Button x:Name="buttonAdd" Content="Add" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="194" Height="80" Click="buttonAdd_Click"/>
+        <Button x:Name="buttonDelete" Content="Delete" Grid.Column="1" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="194" Height="80" Click="buttonDelete_Click" />
     </Grid>
 </Window>
