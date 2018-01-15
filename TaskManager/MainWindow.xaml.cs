@@ -22,13 +22,13 @@ namespace TaskManager
     /// </summary>
     public partial class MainWindow : Window
     {
-        static List<string> Priority = new List<string>(new string[] { "niski", "normalny", "wysoki" });
-        static List<string> Status = new List<string>(new string[] { "nowy", "w realizacji", "zakończony" });
+        static List<string> Priority = new List<string>(new string[] { "niski", "normalny", "wysoki" });    //lista priorytetów do wyboru
+        static List<string> Status = new List<string>(new string[] { "nowy", "w realizacji", "zakończony" });   //lista statusów do wyboru
         public MainWindow()
         {
             InitializeComponent();
-            comboBoxPriority.ItemsSource = Priority;
-            comboBoxStatus.ItemsSource = Status;
+            comboBoxPriority.ItemsSource = Priority;    //przypisanie listy do kontrolki
+            comboBoxStatus.ItemsSource = Status;    //przypisanie listy do kontrolki
             LoadDataBase();
         }
 
@@ -43,7 +43,7 @@ namespace TaskManager
 
         private void buttonAdd_Click(object sender, RoutedEventArgs e)  //Obsługa naciśnięcia przycisku "Add"
         {
-            if (textBoxTask.Text != null && textBoxTask.Text.Length < 1000 && datePickerDate.SelectedDate != null)
+            if (textBoxTask.Text != null && textBoxTask.Text.Length < 1000 && datePickerDate.SelectedDate != null) //zabezpieczenie przed dodaniem pustego wydarzenia, dłuższego niż 1000 znaków o raz bez daty 
             {
                 AddToDataBase();
                 LoadDataBase();
@@ -54,23 +54,31 @@ namespace TaskManager
             }
         }
 
-        private void buttonDelete_Click(object sender, RoutedEventArgs e)
+        private void buttonDelete_Click(object sender, RoutedEventArgs e) //Obsługa naciśnięcia przycisku "Delete"
+        {
+            DeleteFromDataBase();
+            LoadDataBase();
+        }
+
+        private void dataGridTasks_MouseDoubleClick(object sender, MouseButtonEventArgs e)  //Podwójne wciśniecie wiersza pozwala na jego edycje
         {
             try
             {
                 DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
-                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
-                Connection.Open();
-                SqlCommand Command = new SqlCommand("delete from Tasks where Task = '@Task'", Connection);
-                Command.Parameters.Add(new SqlParameter("Task", row[0].ToString()));
-                Command.ExecuteNonQuery();
-                Connection.Close();
-                MessageBox.Show("Item deleted");
+                textBoxTask.Text = row[1].ToString();
+                comboBoxPriority.SelectedItem = row[2].ToString();
+                datePickerDate.SelectedDate = (DateTime)row[3];
+                comboBoxStatus.SelectedItem = row[4].ToString();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
+        }
+
+        private void buttonUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateDataBase();
             LoadDataBase();
         }
 
@@ -107,6 +115,48 @@ namespace TaskManager
                 Command.ExecuteNonQuery();
                 Connection.Close();
                 MessageBox.Show("New item added");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        public void DeleteFromDataBase()    //Usunięcie wiersza o danym indeksie
+        {
+            try
+            {
+                DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
+                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                Connection.Open();
+                SqlCommand Command = new SqlCommand("delete from Tasks where ID = @number", Connection);
+                Command.Parameters.Add(new SqlParameter("number", row[0]));
+                Command.ExecuteNonQuery();
+                Connection.Close();
+                MessageBox.Show("Item deleted");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message.ToString());
+            }
+        }
+
+        public void UpdateDataBase()
+        {
+            try
+            {
+                DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
+                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                Connection.Open();
+                SqlCommand Command = new SqlCommand("update Tasks set Task = @Task, Priority = @Priority, Date = @Date, Status = @Status where ID = @number", Connection);
+                Command.Parameters.Add(new SqlParameter("number", row[0]));
+                Command.Parameters.Add(new SqlParameter("Task", textBoxTask.Text));
+                Command.Parameters.Add(new SqlParameter("Priority", comboBoxPriority.SelectedValue.ToString()));
+                Command.Parameters.Add(new SqlParameter("Date", datePickerDate.SelectedDate));
+                Command.Parameters.Add(new SqlParameter("Status", comboBoxStatus.SelectedValue.ToString()));
+                Command.ExecuteNonQuery();
+                Connection.Close();
+                MessageBox.Show("Item updated");
             }
             catch (Exception ex)
             {
