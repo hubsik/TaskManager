@@ -18,7 +18,7 @@
             <ColumnDefinition Width="220
                               "/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGridTasks" HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="480" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserSortColumns="False" IsReadOnly="True" MouseDoubleClick="dataGridTasks_MouseDoubleClick">
+        <DataGrid x:Name="dataGridTasks" HorizontalAlignment="Left" Height="351" Margin="10,10,0,0" Grid.Row="1" VerticalAlignment="Top" Width="480" AutoGenerateColumns="False" CanUserResizeRows="False" CanUserReorderColumns="False" CanUserResizeColumns="False" IsReadOnly="True" MouseDoubleClick="dataGridTasks_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Width="40" Binding="{Binding ID}"/>
                 <DataGridTextColumn Header="Task" Width="140" Binding="{Binding Task}"/>

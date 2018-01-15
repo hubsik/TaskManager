@@ -62,18 +62,11 @@ namespace TaskManager
 
         private void dataGridTasks_MouseDoubleClick(object sender, MouseButtonEventArgs e)  //Podwójne wciśniecie wiersza pozwala na jego edycje
         {
-            try
-            {
                 DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
                 textBoxTask.Text = row[1].ToString();
                 comboBoxPriority.SelectedItem = row[2].ToString();
                 datePickerDate.SelectedDate = (DateTime)row[3];
                 comboBoxStatus.SelectedItem = row[4].ToString();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message.ToString());
-            }
         }
 
         private void buttonUpdate_Click(object sender, RoutedEventArgs e)
@@ -163,5 +156,6 @@ namespace TaskManager
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+
     }
 }
