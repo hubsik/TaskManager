@@ -24,6 +24,7 @@ namespace TaskManager
     {
         static List<string> Priority = new List<string>(new string[] { "niski", "normalny", "wysoki" });    //lista priorytetów do wyboru
         static List<string> Status = new List<string>(new string[] { "nowy", "w realizacji", "zakończony" });   //lista statusów do wyboru
+        String ConnectionString = @"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;";
         public MainWindow()
         {
             InitializeComponent();
@@ -79,7 +80,7 @@ namespace TaskManager
         {
             try
             {
-                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                SqlConnection Connection = new SqlConnection(ConnectionString);
                 Connection.Open();
                 SqlCommand Command = new SqlCommand("select * from Tasks", Connection);
                 SqlDataAdapter DataAdapter = new SqlDataAdapter(Command);
@@ -98,7 +99,7 @@ namespace TaskManager
         {
             try
             {
-                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                SqlConnection Connection = new SqlConnection(ConnectionString);
                 Connection.Open();
                 SqlCommand Command = new SqlCommand("insert into Tasks values (@Task, @Priority, @Date, @Status)", Connection);
                 Command.Parameters.Add(new SqlParameter("Task", textBoxTask.Text));
@@ -120,7 +121,7 @@ namespace TaskManager
             try
             {
                 DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
-                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                SqlConnection Connection = new SqlConnection(ConnectionString);
                 Connection.Open();
                 SqlCommand Command = new SqlCommand("delete from Tasks where ID = @number", Connection);
                 Command.Parameters.Add(new SqlParameter("number", row[0]));
@@ -139,7 +140,7 @@ namespace TaskManager
             try
             {
                 DataRowView row = (DataRowView)dataGridTasks.SelectedItems[0];
-                SqlConnection Connection = new SqlConnection(@"Server=localhost\SQLEXPRESS;Database=TaskManager;Trusted_Connection=True;");
+                SqlConnection Connection = new SqlConnection(ConnectionString);
                 Connection.Open();
                 SqlCommand Command = new SqlCommand("update Tasks set Task = @Task, Priority = @Priority, Date = @Date, Status = @Status where ID = @number", Connection);
                 Command.Parameters.Add(new SqlParameter("number", row[0]));
